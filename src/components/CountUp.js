@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const easeOutCubic = (t) => --t * t * t + 1;
 
 const CountUp = (props) => {
   const renderRef = useRef(false);
+  const [count, setCount] = useState(0);
   const { id = "", end = 0, delay: duration = 0, text = "", unit = "" } = props;
 
   useEffect(() => {
@@ -14,13 +15,14 @@ const CountUp = (props) => {
       const numberElement = document.getElementById(id);
       const initTime = performance.now();
       let interval = setInterval(() => {
-        let t = (performance.now() - initTime) / duration;
+        let time = (performance.now() - initTime) / duration;
 
-        let currentValue = Math.floor(easeOutCubic(t) * end);
-        numberElement.innerText = `${currentValue}만 ${unit}`;
+        let currentValue = Math.floor(easeOutCubic(time) * end);
+        //numberElement.innerText = `${currentValue}만 ${unit}`;
         numberElement.style.fontWeight = "bold";
+        setCount(+currentValue);
 
-        if (t >= 1) {
+        if (time >= 1) {
           clearInterval(interval);
         }
       }, 30);
@@ -29,7 +31,11 @@ const CountUp = (props) => {
 
   return (
     <CountWrap>
-      <span id={id}>{0}</span>
+      {/* <span id={id}>{0}</span>
+      {text} */}
+      <span id={id}>
+        {count}만 {unit}
+      </span>
       {text}
     </CountWrap>
   );

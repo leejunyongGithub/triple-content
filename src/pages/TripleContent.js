@@ -9,14 +9,46 @@ const TripleContent = () => {
   useEffect(() => {
     ["image-content", "text-content", "awards-content"].forEach(
       (item, index) => {
-        const delay = ((index+1) * 800)/2;
-        setTimeout(() => {
+        if (index === 0) {
           document.getElementById(item).style.display = "block";
-          document.getElementById(item).style.animation = "fadeInUp 700ms";
-        }, delay);
+          document.getElementById(
+            item
+          ).style.animation = `fadeInUp 700ms ease-in-out`;
+        } else {
+          setTimeout(() => {
+            document.getElementById(item).style.display = "block";
+            document.getElementById(
+              item
+            ).style.animation = `fadeInUp 700ms ease-in-out`;
+          }, 700 * index);
+        }
       }
     );
   }, []);
+
+  const textList = [
+    {
+      id: "count_up_01",
+      end: 700,
+      delay: 2000,
+      unit: "명",
+      text: "의 여행자",
+    },
+    {
+      id: "count_up_02",
+      end: 100,
+      delay: 2000,
+      unit: "개",
+      text: "의 여행리뷰",
+    },
+    {
+      id: "count_up_03",
+      end: 470,
+      delay: 2000,
+      unit: "개",
+      text: "의 여행 일정",
+    },
+  ];
 
   return (
     <MainWrap>
@@ -26,30 +58,18 @@ const TripleContent = () => {
         </div>
         <div id="text-content" className="content-text-wrap">
           <div className="count-wrap">
-            <CountUp
-              id="count_up_01"
-              start={0}
-              end={700}
-              delay={2000}
-              unit={"명"}
-              text={`의 여행자`}
-            />
-            <CountUp
-              id="count_up_02"
-              start={0}
-              end={100}
-              delay={2000}
-              unit={"개"}
-              text={`의 여행리뷰`}
-            />
-            <CountUp
-              id="count_up_03"
-              start={0}
-              end={470}
-              delay={2000}
-              unit={"개"}
-              text={`의 여행 일정`}
-            />
+            {textList.map((item, index) => {
+              return (
+                <CountUp
+                  key={`${item.id}-${index}`}
+                  id={item.id}
+                  end={item.end}
+                  delay={item.delay}
+                  unit={item.unit}
+                  text={item.text}
+                />
+              );
+            })}
           </div>
         </div>
         <div id="awards-content" className="awards-wrap">
